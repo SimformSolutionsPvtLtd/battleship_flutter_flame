@@ -1,4 +1,4 @@
-# Battleship Game ([Flutter Flame](https://pub.dev/packages/flame/versions/1.0.0-releasecandidate.11))
+# :ship: Battleship Game ([Flutter Flame:fire:](https://pub.dev/packages/flame/versions/1.0.0-releasecandidate.11))
 
 This is a two player game. You can learn more about rules and how to play this game on
 [wikipedia](https://en.wikipedia.org/wiki/Battleship_(game)). In this game you will place given 4 types
@@ -7,7 +7,7 @@ You have to destroy your opponent's all ships before he do. If you manage to des
 
 This app include null safety support as well.
 
-## Requirements
+## :page_facing_up: Requirements
 
 Make sure that you have all the requirements fulfilled and properly set for project execution.
 
@@ -17,7 +17,7 @@ Make sure that you have all the requirements fulfilled and properly set for proj
 - Working device or emulator (only if you want to execute [step 3](#3-run-app)).
 - Working Internet Connection
 
-## Build project
+## :hammer_and_wrench: Build project
 
 ### 1. Install dependencies
 
@@ -41,7 +41,7 @@ flutter build apk
 flutter run 
 ```
 
-## Usage
+## :iphone: Usage
 
 ``` shell
 1. Install and Open game.
@@ -55,7 +55,7 @@ Here is an example,
 
 ![Demo Image](/readme_assets/demo_play.gif)
 
-## Development
+## :rocket: Development
 
 We have used [flame](https://pub.dev/packages/flame/versions/1.0.0-releasecandidate.11) package to develop this app.
 
