@@ -1,9 +1,9 @@
 # :ship: Battleship Game ([Flutter Flame:fire:](https://pub.dev/packages/flame/versions/1.0.0-releasecandidate.11))
 
-This is a two player game. You can learn more about rules and how to play this game on
-[wikipedia](https://en.wikipedia.org/wiki/Battleship_(game)). In this game you will place given 4 types
-of ships on desired positions and then start the game. You and your opponent will have turns one by one.
-You have to destroy your opponent's all ships before he do. If you manage to destroy all the ships then you won.
+Battleship is a two player game. In this game players will place 4 ships on desired quadrants and then start. Both the players will have turns one by one to guess quadrants and destroy opponent's ship. Whoever manages to destroy opponent's all four ships wins the game.
+
+You can learn more about rules and how to play it on
+[wikipedia](https://en.wikipedia.org/wiki/Battleship_(game)).
 
 This app include null safety support as well.
 
@@ -44,11 +44,11 @@ flutter run
 ## :iphone: Usage
 
 ``` shell
-1. Install and Open game.
-2. Place the ships on quadrants you choose.
-3. Start the game.
-4. Tap on the quadrants to destroy the ships.
-5. If you manage to destroy all 4 ships, you won.
+1. Install and Open Battleship game.
+2. Place all four ships on quadrants as you want.
+3. Hit start button to play game.
+4. Guess the ship locations on quadrants and tap on it to destroy the ships.
+5. If you manage to destroy all 4 ships, you are a winner.
 ```
 
 Here is an example,
