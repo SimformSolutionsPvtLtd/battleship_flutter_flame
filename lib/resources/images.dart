@@ -11,4 +11,5 @@ class ImagePaths {
   static const String start = "start.png";
   static const String title = "title.png";
   static const String userGuide = "user_guide.png";
+  static const String reset = "reset.png";
 }

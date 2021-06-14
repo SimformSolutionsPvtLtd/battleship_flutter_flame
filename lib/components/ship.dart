@@ -45,6 +45,10 @@ class Ship extends PositionComponent
   /// This will help to snap back ship if user is not allowed to put any place.
   Vector2 _previousPosition = Vector2.zero();
 
+  Vector2 _initialPosition = Vector2.zero();
+
+  Vector2 _initialSize = Vector2.zero();
+
   /// Returns the area of this ship with position of this ship.
   Rect get area => this.position & this.size;
 
@@ -89,6 +93,7 @@ class Ship extends PositionComponent
     this.imageUrl = imageUrl!;
     this.imageSize = imageSize!;
     this.position = position ?? this.position;
+    this._initialPosition = this.position;
     this._imageRatio = imageSize.x / imageSize.y;
   }
 
@@ -98,6 +103,8 @@ class Ship extends PositionComponent
 
     this.size = Vector2(gameRef.planeData.quadrantSize,
         gameRef.planeData.quadrantSize / _imageRatio);
+
+    this._initialSize = this.size;
   }
 
   /// Populates [images] and set initial ship to display.
@@ -194,6 +201,8 @@ class Ship extends PositionComponent
 
   @override
   bool onDragStart(int pointerId, DragStartInfo info) {
+    if (gameRef.gameStarted) return false;
+
     _previousPosition = position;
 
     return false;
@@ -213,7 +222,6 @@ class Ship extends PositionComponent
   bool onDragEnd(int pointerId, DragEndInfo info) {
     if (gameRef.gameStarted) return false;
 
-    bool notPlaced = true;
     gameRef.planeData.quadrants.forEach((coordinate) {
       Vector2 referencePoint = Vector2.zero();
       if (currentSprite % 2 == 0)
@@ -225,19 +233,29 @@ class Ship extends PositionComponent
         this.position = coordinate.area.topLeft.toVector2();
         _arrangeShip();
         if (!_isOverlapping()) {
-          notPlaced = false;
           placed = true;
         }
       }
     });
 
-    if (notPlaced) {
+    if (placed) {
+      printCoordinates();
+      gameRef.showStartButton();
+    } else {
       this.position = _previousPosition;
     }
 
     _previousVariableQuadrants.forEach((element) => element.setNeutral());
 
     return false;
+  }
+
+  void printCoordinates() {
+    String placedQuadrant = "";
+    _previousQuadrants.forEach((element) {
+      placedQuadrant += (element.coordinate() + ": ${element.ship?.id}, ");
+    });
+    print("Placed Ships: $placedQuadrant");
   }
 
   /// Defines whether ship is overlapping on other ship or not
@@ -368,6 +386,18 @@ class Ship extends PositionComponent
   void startGame() {
     _shipPreviousSize = this.size;
     this.size = Vector2.zero();
+  }
+
+  void reset() {
+    position = _initialPosition;
+    size = _initialSize;
+
+    _previousQuadrants = [];
+    _previousVariableQuadrants = [];
+
+    placed = false;
+    _destroyed = false;
+    currentSprite = 0;
   }
 
   @override

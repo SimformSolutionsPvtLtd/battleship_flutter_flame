@@ -27,6 +27,9 @@ class ImageComponent extends PositionComponent with HasGameRef<MyGame> {
   /// Defines the size of image displayed in screen.
   late Vector2 size;
 
+  late Vector2 initialSize;
+  late Vector2 initialPosition;
+
   /// Defines whether image should be rendered or not.
   bool shouldRender = true;
 
@@ -75,6 +78,9 @@ class ImageComponent extends PositionComponent with HasGameRef<MyGame> {
     this.imageSrc = image ?? "";
     this.srcSize = srcSize ?? Vector2.zero();
     this.position = position ?? Vector2.zero();
+
+    this.initialSize = this.size;
+    this.initialPosition = this.position;
     _aspectRatio = this.srcSize.x / this.srcSize.y;
   }
 
@@ -99,6 +105,16 @@ class ImageComponent extends PositionComponent with HasGameRef<MyGame> {
         size: size,
       );
     }
+  }
+
+  void hide() {
+    this.size = Vector2.zero();
+    shouldRender = false;
+  }
+
+  void show() {
+    this.size = initialSize;
+    shouldRender = true;
   }
 }
 

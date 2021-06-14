@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:battleship/components/buttons/buttons.dart';
 import 'package:battleship/components/coordinate.dart';
 import 'package:battleship/components/quadrant.dart';
 import 'package:battleship/components/ship.dart';
-import 'package:battleship/components/start_button.dart';
 import 'package:battleship/components/title.dart';
 import 'package:battleship/components/user_guide.dart';
 import 'package:battleship/models/quadrant_plane_data.dart';
@@ -48,8 +48,6 @@ class MyGame extends BaseGame
   ///
   double coordinateSize = 0;
 
-  late Sprite title;
-
   /// Defines the explosion animation displayed when user taps on quadrant which contains a ship.
   ///
   late SpriteAnimation _boomAnimation;
@@ -75,6 +73,10 @@ class MyGame extends BaseGame
   /// final animation size of animation
   ///
   Vector2 _animationSize = Vector2.zero();
+
+  late StartButton _startButton;
+  late ResetButton _resetButton;
+  late UserGuide _userGuide;
 
   /// Runs every time when game resize.
   ///
@@ -117,12 +119,6 @@ class MyGame extends BaseGame
   ///
   @override
   Future<void> onLoad() async {
-    title = await Sprite.load(
-      "title.png",
-      srcPosition: Vector2.zero(),
-      srcSize: Vector2(683, 262),
-    );
-
     _boomAnimation = await _getBoomAnimation();
 
     planeData = planeData.copyWith(
@@ -143,9 +139,18 @@ class MyGame extends BaseGame
 
     _addShips();
 
+    _startButton = StartButton();
+    _userGuide = UserGuide();
+    _resetButton = ResetButton();
+
+    add(_userGuide);
     add(GameTitle());
-    add(StartButton());
-    add(UserGuide());
+    add(_resetButton);
+    add(_startButton);
+
+    _resetButton.hide();
+    _startButton.hide();
+    _userGuide.hide();
   }
 
   /// This method will run continuously after certain interval of time.
@@ -308,5 +313,48 @@ class MyGame extends BaseGame
         ), () {
       boomInProgress = false;
     });
+  }
+
+  /// Shows the start button only if game is not started and all four ships are placed.
+  void showStartButton() {
+    bool shouldRender = true;
+
+    this.planeData.ships.forEach((element) {
+      shouldRender &= element.placed && !element.destroyed;
+    });
+
+    shouldRender &= !this.gameStarted;
+
+    if (shouldRender) {
+      _startButton.show();
+    }
+  }
+
+  void showResetButton() {
+    bool shouldRender = true;
+
+    this.planeData.ships.forEach((element) {
+      shouldRender &= element.destroyed;
+    });
+
+    shouldRender &= this.gameStarted;
+
+    if (shouldRender) {
+      _userGuide.hide();
+      gameStarted = false;
+      _resetButton.show();
+    }
+  }
+
+  void resetGame() {
+    gameStarted = false;
+
+    planeData.ships.forEach(
+      (ship) => ship.reset(),
+    );
+    planeData.quadrants.forEach((q) => q.reset());
+    _startButton.hide();
+    _resetButton.hide();
+    _userGuide.hide();
   }
 }

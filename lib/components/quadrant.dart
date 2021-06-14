@@ -47,7 +47,7 @@ class Quadrant extends PositionComponent with Tapable, HasGameRef<MyGame> {
   bool _shipDestroyed = false;
 
   /// Defines whether ship part on this quadrant is destroyed or not.
-  bool get shipDestroyed => _shipDestroyed;
+  bool get shipDestroyed => this.hasShip && _shipDestroyed;
 
   /// Constructor for [Quadrant]
   Quadrant({
@@ -95,6 +95,10 @@ class Quadrant extends PositionComponent with Tapable, HasGameRef<MyGame> {
     );
   }
 
+  String coordinate() =>
+      "${String.fromCharCode(id! % gameRef.planeData.mainAxisCount + 65)}"
+      "${id! ~/ gameRef.planeData.mainAxisCount + 1}";
+
   /// Runs when user taps on quadrant this won't allows users to tap on already tapped quadrants.
   @override
   bool onTapUp(TapUpInfo event) {
@@ -104,7 +108,9 @@ class Quadrant extends PositionComponent with Tapable, HasGameRef<MyGame> {
         this._backGroundColor == Colors.transparent) {
       print(
           "Tapped on: ${String.fromCharCode(id! % gameRef.planeData.mainAxisCount + 65)}"
-          "${id! ~/ gameRef.planeData.mainAxisCount + 1}");
+          "${id! ~/ gameRef.planeData.mainAxisCount + 1}, Game Started: ${gameRef.gameStarted}, "
+          "Has Ship: $hasShip, Ship Data: ${this.ship?.id}");
+
       if (_ship == null) {
         _backGroundColor = Colors.green;
       } else if (!_shipDestroyed) {
@@ -112,6 +118,7 @@ class Quadrant extends PositionComponent with Tapable, HasGameRef<MyGame> {
         _ship?.deriveDestroyed();
         gameRef.showBoomAnimation(this.position);
         _backGroundColor = Colors.red;
+        gameRef.showResetButton();
       }
     }
 
@@ -136,6 +143,13 @@ class Quadrant extends PositionComponent with Tapable, HasGameRef<MyGame> {
   /// Destroy the ship if there is any.
   void destroyShip() {
     if (_ship != null) _shipDestroyed = true;
+  }
+
+  /// Resets the quadrant
+  void reset() {
+    _shipDestroyed = false;
+    this.setNeutral();
+    this.moveShip();
   }
 
   @override

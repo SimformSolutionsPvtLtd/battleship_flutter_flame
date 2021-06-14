@@ -16,6 +16,7 @@ class UserGuide extends ImageComponent {
     super.update(dt);
 
     this.shouldRender = gameRef.gameStarted;
+    this.size = this.shouldRender ? this.initialSize : Vector2.zero();
   }
 
   @override
@@ -26,7 +27,8 @@ class UserGuide extends ImageComponent {
         (gameRef.planeData.mainAxisCount - 4) * gameRef.planeData.quadrantSize;
 
     size = Vector2(width, width / aspectRatio);
-
     position = Vector2((gameSize.x - width) / 2, gameSize.y * 0.83);
+    initialPosition = position;
+    initialSize = size;
   }
 }

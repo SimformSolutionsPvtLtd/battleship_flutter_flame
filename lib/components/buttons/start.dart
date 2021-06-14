@@ -1,7 +1,4 @@
-import 'package:battleship/components/image_component.dart';
-import 'package:battleship/resources/images.dart';
-import 'package:flame/components.dart';
-import 'package:flame/gestures.dart';
+part of 'buttons.dart';
 
 class StartButton extends ImageButton {
   /// Start button of the app
@@ -12,9 +9,7 @@ class StartButton extends ImageButton {
           srcSize: Vector2(204, 59),
           imageSize: Vector2(204, 59),
           image: ImagePaths.start,
-        ) {
-    this.shouldRender = false;
-  }
+        );
 
   @override
   void onGameResize(Vector2 gameSize) {
@@ -25,25 +20,15 @@ class StartButton extends ImageButton {
 
     size = Vector2(width, width / aspectRatio);
     position = Vector2((gameSize.x - width) / 2, gameSize.y * 0.85);
-  }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
-
-    bool shouldRender = true;
-
-    gameRef.planeData.ships.forEach((element) {
-      shouldRender &= element.placed;
-    });
-
-    this.shouldRender = shouldRender;
-    this.shouldRender &= !gameRef.gameStarted;
+    initialPosition = position;
+    initialSize = size;
   }
 
   @override
   bool onTapUp(TapUpInfo info) {
     gameRef.gameStarted = true;
+    this.hide();
     gameRef.planeData.ships.forEach(
       (element) => element.startGame(),
     );
